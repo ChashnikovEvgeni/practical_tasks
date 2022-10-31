@@ -12,26 +12,30 @@ func Task_16_solution() []int {
 	return sortArray
 
 }
-func quickSort(arr []int, low, high int) []int {
-	if low < high {
+func quickSort(arr []int, leftBorder, rightBorder int) []int {
+	if leftBorder < rightBorder {
 		var p int
-		arr, p = partition(arr, low, high)
-		arr = quickSort(arr, low, p-1)
-		arr = quickSort(arr, p+1, high)
+		// Берём опорную точку pivot, элементы меньше опорной точки оказываются слева,
+		// элементы больше оказываются справая
+		arr, p = partition(arr, leftBorder, rightBorder)
+		// берём последовательность до pivot и после и повторяем процедуру
+		arr = quickSort(arr, leftBorder, p-1)
+		arr = quickSort(arr, p+1, rightBorder)
+		// рекусрия продолжается до момента пока сортируем кусок не будет иметь длину 1
 	}
 	return arr
 
 }
 
-func partition(arr []int, low, high int) ([]int, int) {
-	pivot := arr[high]
-	i := low
-	for j := low; j < high; j++ {
+func partition(arr []int, leftBorder, rightBorder int) ([]int, int) {
+	pivot := arr[rightBorder]
+	i := leftBorder
+	for j := leftBorder; j < rightBorder; j++ {
 		if arr[j] < pivot {
 			arr[i], arr[j] = arr[j], arr[i]
 			i++
 		}
 	}
-	arr[i], arr[high] = arr[high], arr[i]
+	arr[i], arr[rightBorder] = arr[rightBorder], arr[i]
 	return arr, i
 }
